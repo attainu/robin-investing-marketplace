@@ -1,0 +1,34 @@
+{
+  "name": "robin-investing-marketplace",
+  "version": "1.0.0",
+  "description": "AttainU BackEnd Project",
+  "main": "sever.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/attainu/robin-investing-marketplace.git"
+  },
+  "keywords": [
+    "Express",
+    "mongoose",
+    "passport",
+    "MVCpattern",
+    "nodemailer"
+  ],
+  "author": "Shubham Printe, Ritwik Sharma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/attainu/robin-investing-marketplace/issues"
+  },
+  "homepage": "https://github.com/attainu/robin-investing-marketplace#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.9.19"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
