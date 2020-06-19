@@ -1,11 +1,6 @@
-const express = require('express');
+const app = require("./app");
 
-const app = express();
+const domainName = process.env.DOMAIN_NAME || `http://localhost:8080`;
+const port = process.env.PORT || 8080;
 
-app.get('/', function (req, res){
-  res.send('Basic Route');
-});
-
-app.listen(3000, function () {
-  console.log('Server running on port 3000');
-});
+app.listen(port, () => console.log(`Server connected at ${domainName}`));
