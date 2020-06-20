@@ -35,9 +35,11 @@ const UsersSchema = new Schema(
     },
 
     gender: {
-      type: String,
+      type: String
     },
-    address: { type: String },
+    address: {
+      type: String
+    },
     isConfirmed: {
       type: Boolean,
       required: true,

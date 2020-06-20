@@ -25,6 +25,13 @@ app.use(
 );
 
 // Routes
+// dashboard route
+app.use(require("./routes/homeRoute"));
+
+// CurrencyExchange Routes
+app.use(require('./routes/currencyExRoutes'));
+
+// User Routes
 app.use(require("./routes/userRoutes"));
 app.use(require("./routes/userEmailRoutes"));
 
