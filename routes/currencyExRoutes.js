@@ -7,8 +7,8 @@ router.get('/CurrencyExchange', auth, currencyExController.renderCurrencyExchang
 
 router.get('/CurrencyExchange/:coinId', auth, currencyExController.renderCoinDetailsPage);
 
-router.get('/CurrencyExchange/transaction/:coinId', auth, currencyExController.renderTransactionPage);
+router.get('/CurrencyExchange/transaction/:coinId', currencyExController.renderTransactionPage);
 
-router.post('/CurrencyExchange/transaction/:coinId', auth, currencyExController.addTransaction);
+router.post('/CurrencyExchange/transaction/:coinId', currencyExController.addTransaction);
 
 module.exports = router;

@@ -54,7 +54,7 @@ const UsersSchema = new Schema(
     resetToken: {
       type: String,
       default: "",
-    },
+    }
   },
   { timestamps: true }
 );

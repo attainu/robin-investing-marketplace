@@ -17,27 +17,11 @@ var walletSchema = new Schema(
           type: Number,
           required: true
         }
-      }
-    ],
-    transactions: [
-      {
-        Amount: {
-          type: Number,
-          required: true,
-          trim: true
-        },
-        Type: {
-          type: String,
-          required: true,
-          trim: true
-        },
-        TransactionDate: {
-          type: Date,
-          required: true
-        }
-      }
+      },
+      {autoIndexId: false}
     ]
-  }
+  },
+  {collection: "wallets"}
 );
 
 
