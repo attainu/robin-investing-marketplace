@@ -50,7 +50,7 @@ module.exports = {
   },
   addTransaction: async function(req, res){
     // var user = req.user;
-    // let [userId, BaseCurr, ExCurr, BaseAmt, ExAmt, newCurr] = ["5eef6ba49b64f84ddc4936ec", req.body.BaseCurr, req.body.ExCurr, req.body.BaseAmt, req.body.ExAmt, {coin: ExCurr, balance: ExAmt}];
+    // var userId = req.session.userId; //5eef6ba49b64f84ddc4936ec
     var userId = "5eef6ba49b64f84ddc4936ec";
     var BaseCurr = req.body.BaseCurr;
     var ExCurr = req.body.ExCurr;
@@ -72,13 +72,22 @@ module.exports = {
 
     const wallet = wallets[0];
 
-    wallet.Currencies.push(newCurr);
+    // adding new currency/ updating existing currency
+    const ExIndex = wallet.Currencies.findIndex(function(obj){
+      return obj.coin == ExCurr;
+    });
+    if(!ExIndex){
+      wallet.Currencies.push(newCurr);
+    }
+    else{
+      wallet.Currencies[ExIndex].balance = (wallet.Currencies[ExIndex].balance + ExAmt);
+    }
 
     // finding index of base currency
-      const index = wallet.Currencies.findIndex(function(obj){
+      const BaseIndex = wallet.Currencies.findIndex(function(obj){
         return obj.coin == BaseCurr;
       });
-      wallet.Currencies[index].balance = (wallet.Currencies[index].balance - BaseAmt);
+      wallet.Currencies[BaseIndex].balance = (wallet.Currencies[BaseIndex].balance - BaseAmt);
       await wallet.save()
       .then(function(wallet){
           res.json(wallet);
@@ -112,40 +121,3 @@ module.exports = {
 
   }
 };
-
-
-
-
-//
-// .then(function (wallet){
-//
-//   var currencies = wallet[0].Currencies;
-//
-//   var index = currencies.findIndex(function(obj){
-//     return obj.coin == BaseCurr;
-//   });
-//
-//   currencies[index].balance = (currencies[index].balance - BaseAmt);
-//   currencies.push(newCurr);
-//   console.log(currencies);
-
-  // Wallet.updateOne(
-  //   {User: userId},
-  //   {currencies},
-  //   {new: true}
-  // )
-  // .then(function (wallet){
-  //   if(!wallet) return res.status(404).send("Wallet not found.");
-  //   console.log(wallet);
-  //   res.json(wallet);
-  // })
-  // .catch(function (err){
-  //   if (err.name === "CastError")
-  //     return res.status(400).send("Invalid User ID");
-  //   if (err.name === "ValidationError")
-  //     return res.status(400).send(`Validation Error: ${err.message}`);
-  //   return res.status(500).send("Server Error");
-  // });
-  // console.log(currencies);
-
-  // wallet.Currencies = [...wallet.Currencies, {coin: req.params.coinId, balance: req.body.ExAmt}]
