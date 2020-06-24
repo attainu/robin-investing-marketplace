@@ -50,8 +50,8 @@ module.exports = {
   },
   addTransaction: async function(req, res){
     // var user = req.user;
-    // var userId = req.session.userId; //5eef6ba49b64f84ddc4936ec
-    var userId = "5eef6ba49b64f84ddc4936ec";
+    var userId = req.session.userId; //5eef6ba49b64f84ddc4936ec
+    // var userId = "5eef6ba49b64f84ddc4936ec";
     var BaseCurr = req.body.BaseCurr;
     var ExCurr = req.body.ExCurr;
     var BaseAmt = req.body.BaseAmt;
@@ -88,6 +88,8 @@ module.exports = {
         return obj.coin == BaseCurr;
       });
       wallet.Currencies[BaseIndex].balance = (wallet.Currencies[BaseIndex].balance - BaseAmt);
+
+// saving updates to wallet
       await wallet.save()
       .then(function(wallet){
           res.json(wallet);
@@ -118,6 +120,5 @@ module.exports = {
       console.log(err);
       return res.status(500).json({success: false, error: "Server Error"});
     });
-
   }
 };

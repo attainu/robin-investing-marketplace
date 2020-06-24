@@ -28,6 +28,9 @@ app.use(
 // dashboard route
 app.use(require("./routes/homeRoute"));
 
+// user wallet Routes
+app.use(require('./routes/walletRoute'));
+
 // CurrencyExchange Routes
 app.use(require('./routes/currencyExRoutes'));
 
