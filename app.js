@@ -34,6 +34,9 @@ app.use(require('./routes/walletRoute'));
 // CurrencyExchange Routes
 app.use(require('./routes/currencyExRoutes'));
 
+// Mutual Funds routes
+app.use(require('./routes/mutualFundRoutes'));
+
 // User Routes
 app.use(require("./routes/userRoutes"));
 app.use(require("./routes/userEmailRoutes"));

@@ -21,6 +21,6 @@ router.get('/mutualFundsCustom',customSearch) //custom searh by either one term 
 
 
 //save add transaction final in mutual funds
-router.post("/saveaddtrans",auth,addSaveTransac)
+router.post("/saveaddtrans",addSaveTransac)
 
 module.exports = router;

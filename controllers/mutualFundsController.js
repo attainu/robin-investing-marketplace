@@ -24,7 +24,7 @@ module.exports = {
   },
 
 
-  
+
   //Search by SchemeId of Mutual Funds
   async searchMutualFunds(req, res) {
     const SchemeCode = req.query.SchemeCode;
@@ -78,8 +78,11 @@ module.exports = {
 
   async addSaveTransac(req, res) {
     const { schemeCode, noOfUnits, typeOfTransaction } = { ...req.body };
-
+    const USDCurrId = "5eeda3289945904484e619de";
     const currUserid = req.session.userId;
+
+// {"schemeCode":"145349", "noOfUnits":10, "typeOfTransaction":"Sell"}
+
 
 
 
@@ -92,7 +95,22 @@ module.exports = {
     //<<<<<<<<<<<<----------
 
     // Code of fetch wallet balacance to be put here and stored in 'walletSampleBalace' as a variable
-    var walletSampleBalance = 10000; //fetch and store wallet details
+
+    const wallets = await Wallet.find({
+      User: "5eef6ba49b64f84ddc4936ec" //dummy user can be changed with session.userid
+    });
+    if(!wallets || wallets.length === 0)
+      return res.status(406).json({success: false, error: `No wallet found in our records with requested id ${userId}`});
+
+    const wallet = wallets[0];
+
+    const index = wallet.Currencies.findIndex(function(obj){
+      return obj.coin == USDCurrId;
+    });
+    var walletSampleBalance = wallet.Currencies[index].balance;
+
+    // var walletSampleBalance = 10000; //fetch and store wallet details
+
 
     //------------------------------------------->>>>>>>>>>>>>>>>>>>
 
@@ -117,6 +135,7 @@ module.exports = {
       console.log("scheme deatails>>> ", foundScheme);
 
       const totalTransactionValue = noOfUnits * foundScheme.Net_Asset_Value;
+      // add sell transction check
 
       if (totalTransactionValue > walletSampleBalance) {
         res.json({
@@ -201,6 +220,22 @@ module.exports = {
 
       //updating wallet blance here
       //<----------------------------------------------------------------------
+      if(typeOfTransaction == "Sell"){
+        wallet.Currencies[index].balance = (wallet.Currencies[index].balance + totalTransactionValue);
+      }
+      else if(typeOfTransaction == "Buy"){
+        wallet.Currencies[index].balance = (wallet.Currencies[index].balance - totalTransactionValue);
+      }
+
+      await wallet.save()
+      .then(function(wallet){
+        console.log(wallet); // i have just loddeg the updated wallet here
+      })
+      .catch(function(err){
+        return res.status(406).json({success: false, error: `Server Error`});
+      });
+
+
 
       //   <------ deduct/add money after the transaction and update the wallet------->>>
 
