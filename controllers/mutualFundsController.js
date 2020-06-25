@@ -78,7 +78,7 @@ module.exports = {
 
   async addSaveTransac(req, res) {
     const { schemeCode, noOfUnits, typeOfTransaction } = { ...req.body };
-    const USDCurrId = "5eeda3289945904484e619de";
+    const USDCurrId = "5eeda3289945904484e619de";//Dollar _id value
     const currUserid = req.session.userId;
 
 // {"schemeCode":"145349", "noOfUnits":10, "typeOfTransaction":"Sell"}
@@ -97,10 +97,10 @@ module.exports = {
     // Code of fetch wallet balacance to be put here and stored in 'walletSampleBalace' as a variable
 
     const wallets = await Wallet.find({
-      User: "5eef6ba49b64f84ddc4936ec" //dummy user can be changed with session.userid
+      User: currUserid //dummy user can be changed with session.userid
     });
     if(!wallets || wallets.length === 0)
-      return res.status(406).json({success: false, error: `No wallet found in our records with requested id ${userId}`});
+      return res.status(406).json({success: false, error: `No wallet found in our records with requested id ${currUserid}`});
 
     const wallet = wallets[0];
 
@@ -136,7 +136,7 @@ module.exports = {
 
       const totalTransactionValue = noOfUnits * foundScheme.Net_Asset_Value;
       // add sell transction check
-
+if(typeOfTransaction == 'Buy'){
       if (totalTransactionValue > walletSampleBalance) {
         res.json({
           result: fail,
@@ -144,6 +144,7 @@ module.exports = {
             "wallet balance is less than transction amount you are trying to perform",
         });
       }
+    }
 
       var mutualFindInv = await MutualFundsInvestment.findOne({
         $and: [{ "Investments.SchemeId": schemeCode }, { userId: currUserid }],

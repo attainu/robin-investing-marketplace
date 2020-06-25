@@ -12,4 +12,7 @@ router.get('/wallet/addFunds', walletController.renderAddFundsPage);
 router.post('/wallet/addFunds/', walletController.addFunds);
 // updates wallet and adds new transactoin.
 
+
+router.post('/addWallet',auth, walletController.addWallet) //added1
+
 module.exports = router;
