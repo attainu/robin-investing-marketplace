@@ -19,7 +19,7 @@ module.exports = {
         .json({ message: "request successfull", fundDetails: allfunds });
     } catch (err) {
       console.log(err.message);
-      res.json({ Error: err.message });
+      res.status(500).json({ success: false, error: "Server Error" });
     }
   },
 
@@ -40,7 +40,7 @@ module.exports = {
         .json({ message: "request successfull", fundDetails: allfunds });
     } catch (err) {
       console.log(err.message);
-      res.json({ Error: err.message });
+      res.status(500).json({ success: false, error: "Server Error" });
     }
   },
 
@@ -72,7 +72,7 @@ module.exports = {
         .json({ message: "request successfull", fundDetails: customFunds });
     } catch (err) {
       console.log(err.message);
-      res.json({ Error: err.message });
+      res.status(500).json({ success: false, error: "Server Error" });
     }
   },
 
@@ -126,7 +126,7 @@ module.exports = {
     try {
       const findScheme = await MutualFunds.find({ Scheme_Code: schemeCode });
       if (!findScheme) {
-        res.json({
+        res.status(404).json({
           result: fail,
           message: "No mutual fund with such Scheme Id exists",
         });
@@ -138,7 +138,7 @@ module.exports = {
       // add sell transction check
 if(typeOfTransaction == 'Buy'){
       if (totalTransactionValue > walletSampleBalance) {
-        res.json({
+        res.status(403).json({
           result: fail,
           message:
             "wallet balance is less than transction amount you are trying to perform",
@@ -155,7 +155,7 @@ if(typeOfTransaction == 'Buy'){
       }
       if (mutualFindInv.length == 0) {
         if (typeOfTransaction == "Sell") {
-          res.json({
+          res.status(403).json({
             result: "false",
             message: "You don't have Mutual fund units to sell this",
           });
@@ -192,7 +192,7 @@ if(typeOfTransaction == 'Buy'){
         if (typeOfTransaction == "Sell") {
           var newUnits = existingUnits - noOfUnits;
           if (newUnits < 0) {
-            res.json({
+            res.status(403).json({
               result: "False",
               message:
                 "Quantity of units selling exceeds the quantity you have",
@@ -261,10 +261,10 @@ if(typeOfTransaction == 'Buy'){
       });
 
       console.log("total Transaction value:", totalTransactionValue);
-      res.json({ result: "Transaction success", message: saveTransaction });
+      res.status(200).json({ result: "Transaction success", message: saveTransaction });
     } catch (err) {
       console.log(err.message);
-      res.json({ Error: err.message });
+      res.status(500).json({ success: false, error: "Server Error" });
     }
   },
 };

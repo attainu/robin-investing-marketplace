@@ -33,8 +33,8 @@ module.exports = {
       });
   },
   addFunds: async function (req, res) {
-    // const userId = req.session.userId;
-    var userId = "5eef6ba49b64f84ddc4936ec";
+    const userId = req.session.userId; //added
+    // var userId = "5eef6ba49b64f84ddc4936ec";
     var BaseCurr = req.body.BaseCurr;
     var BaseAmt = req.body.BaseAmt;
     var newCurr = { coin: BaseCurr, balance: BaseAmt };
@@ -118,10 +118,10 @@ module.exports = {
       var addingWallet = await Wallet.create({ User: currUserId });
       addingWallet.Currencies.push(newCurr);
       await addingWallet.save();
-      res.json({success:true,message:"wallet successfully added"})
+      res.status(200).json({success:true,message:"wallet successfully added"})
     } catch (err) {
       console.log(err.message);
-      res.json({ Error: err.message });
+      res.status(500).json({ success: false, error: "Server Error" });
     }
   },
 };
