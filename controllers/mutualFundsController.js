@@ -29,13 +29,23 @@ module.exports = {
   async searchMutualFunds(req, res) {
     const SchemeCode = req.query.SchemeCode;
     // console.log("scheme code visisble-->"+SchemeCode)
+    if(!SchemeCode || SchemeCode==0){
+      return res.status(406).json({ success: false, error: "no input recieved" })
+
+    }
+
     try {
       const allfunds = await MutualFunds.find(
         { Scheme_Code: SchemeCode },
         { _id: 0, Date: 1, Scheme_Name: 1, Net_Asset_Value: 1, Scheme_Code: 1 }
       ).limit(10);
 
-      res
+if(!allfunds || allfunds.length==0){
+  
+  return res.status(404).json({ success: false, error: "no fund with such ID Found.Try again" })
+}
+
+      return res
         .status(200)
         .json({ message: "request successfull", fundDetails: allfunds });
     } catch (err) {
@@ -125,8 +135,8 @@ module.exports = {
 
     try {
       const findScheme = await MutualFunds.find({ Scheme_Code: schemeCode });
-      if (!findScheme) {
-        res.status(404).json({
+      if (!findScheme ||findScheme.length==0) {
+        return res.status(404).json({
           result: fail,
           message: "No mutual fund with such Scheme Id exists",
         });
@@ -138,7 +148,7 @@ module.exports = {
       // add sell transction check
 if(typeOfTransaction == 'Buy'){
       if (totalTransactionValue > walletSampleBalance) {
-        res.status(403).json({
+       return res.status(403).json({
           result: fail,
           message:
             "wallet balance is less than transction amount you are trying to perform",
@@ -155,7 +165,7 @@ if(typeOfTransaction == 'Buy'){
       }
       if (mutualFindInv.length == 0) {
         if (typeOfTransaction == "Sell") {
-          res.status(403).json({
+          return res.status(403).json({
             result: "false",
             message: "You don't have Mutual fund units to sell this",
           });
@@ -192,7 +202,7 @@ if(typeOfTransaction == 'Buy'){
         if (typeOfTransaction == "Sell") {
           var newUnits = existingUnits - noOfUnits;
           if (newUnits < 0) {
-            res.status(403).json({
+           return res.status(403).json({
               result: "False",
               message:
                 "Quantity of units selling exceeds the quantity you have",
