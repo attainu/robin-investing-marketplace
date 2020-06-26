@@ -18,7 +18,7 @@ const transportOptions = {
 
 const mailTransport = nodemailer.createTransport(transportOptions);
 const sendMail = async (mode, email, token) => {
-  const domainName = process.env.DOMAIN_NAME || `http://localhost:1234`;
+  const domainName = process.env.DOMAIN_NAME || `http://localhost:8080`;
   let html = null
   if (mode === "confirm")
     html = `
