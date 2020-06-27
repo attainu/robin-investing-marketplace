@@ -109,8 +109,8 @@ module.exports = {
       // console.log("findwallecheck--->", findWalletCheck);
       // console.log("finalcheck length",findWalletCheck.length)
 
-      if (findWalletCheck!=0) {
-        return res.json({
+      if (findWalletCheck.length!=0) {
+        return res.status(400).json({
           success: false,
           error: "Logged in user already has a wallet",
         });

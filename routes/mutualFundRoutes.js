@@ -3,7 +3,7 @@ const router = Router();
 const auth = require("../middleware/authenticate");
 const {
   getMutualFunds,
-  searchMutualFunds,customSearch,addSaveTransac
+  searchMutualFunds,customSearch,addSaveTransac,showHoldings,showTransactions
 } = require("../controllers/mutualFundsController");
 
 
@@ -16,5 +16,7 @@ router.get('/mutualFundsCustom',customSearch) //custom searh by either one term 
 
 //save add transaction final in mutual funds
 router.post("/saveaddtrans",auth,addSaveTransac)
+router.get("/MutualFundHoldings",auth,showHoldings) //Shows current MF holding a user has
+router.get("/MutualFundTransactions",auth,showTransactions)//shows MF transaction history of the user
 
 module.exports = router;

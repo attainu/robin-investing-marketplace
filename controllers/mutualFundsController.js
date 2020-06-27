@@ -277,4 +277,30 @@ if(typeOfTransaction == 'Buy'){
       res.status(500).json({ success: false, error: "Server Error" });
     }
   },
+
+  async showHoldings(req,res){
+    const curruserID= req.session.userId;
+
+    const holdingPayload= await MutualFundsInvestment.find({userId:curruserID},{_id: 0,userId:0,'Investments._id':0})
+
+    if(!holdingPayload || holdingPayload.length==0){
+      return res.status(404).json({result:false,message:"You do not have any mutual fund holdings at present"})
+    }
+
+    return res.json({result:"request successful",holdings:holdingPayload})
+
+  },
+
+  async showTransactions(req,res){
+    const curruserID= req.session.userId;
+
+    const allTransPayload= await mutualFundsTransactions.find({User:curruserID})
+
+    if(!allTransPayload || allTransPayload.length==0){
+      return res.status(404).json({result:false,message:"You do not have any mutual fund Transactions record"})
+    }
+
+    return res.json({result:"request successful",Transactions:allTransPayload})
+
+  }
 };
