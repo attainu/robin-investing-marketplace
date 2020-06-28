@@ -238,9 +238,8 @@ module.exports = {
 
   async userprofile(req,res){
     try {
-      const user = await  User.findOne({_id:req.body.user_id});
-      // console.log("user details>>>>>>>>",req.session.userId)
-      if (user.isConfirmed && req.body.user_id === req.session.userId) {
+      const user = await  User.findOne({_id:req.session.userId})
+      if (user.isConfirmed && user._id ==req.session.userId) {
         req.session.userId = user._id;
         return res.json({
           login_successfully: true,
