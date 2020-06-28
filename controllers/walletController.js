@@ -3,9 +3,9 @@ var Transaction = require('../models/Transactions');
 var Wallet = require('../models/Wallet');
 
 module.exports = {
-  renderWalletPage: async function (req, res) {
-    // const userId = req.session.userId;
-    var userId = "5eef6ba49b64f84ddc4936ec";
+  renderWalletPage: async (req, res) => {
+    const userId = req.session.userId;
+    // var userId = "5eef6ba49b64f84ddc4936ec";
     const wallets = await Wallet.find({
       User: userId,
     });
@@ -21,18 +21,18 @@ module.exports = {
 
     res.json(wallets);
   },
-  renderAddFundsPage: async function (req, res) {
+  renderAddFundsPage: async (req, res) => {
     Coins.find({
       symbol: "USD",
     })
-      .then(function (USD) {
+      .then((USD) => {
         res.json(USD);
       })
-      .catch(function (err) {
+      .catch((err) => {
         return res.status(500).send(`Server Error${err.message}`);
       });
   },
-  addFunds: async function (req, res) {
+  addFunds: async (req, res) => {
     const userId = req.session.userId; //added
     // var userId = "5eef6ba49b64f84ddc4936ec";
     var BaseCurr = req.body.BaseCurr;
@@ -51,7 +51,7 @@ module.exports = {
     const wallet = wallets[0];
 
     // adding new currency/ updating existing currency
-    const index = wallet.Currencies.findIndex(function (obj) {
+    const index = wallet.Currencies.findIndex((obj) => {
       return obj.coin == BaseCurr;
     });
     if (index < 0) {
@@ -63,10 +63,10 @@ module.exports = {
     // saving updates to wallet
     await wallet
       .save()
-      .then(function (wallet) {
+      .then((wallet) => {
         res.json(wallet);
       })
-      .catch(function (err) {
+      .catch((err) => {
         return res.status(406).json({ success: false, error: `Server Error` });
       });
 
@@ -82,10 +82,10 @@ module.exports = {
     // saving the new transaction
     await transaction
       .save()
-      .then(function (transaction) {
+      .then((transaction) => {
         console.log(transaction);
       })
-      .catch(function (err) {
+      .catch((err) => {
         if (err.name === "Validation Error")
           return res
             .status(400)

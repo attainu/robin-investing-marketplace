@@ -1,12 +1,12 @@
 var Coins = require('../models/Coins');
 
 module.exports = {
-  renderHomePage: function (req, res) {
-    Coins.find()
-    .then(function (coins){
+  renderHomePage: async (req, res) => {
+    await Coins.find()
+    .then((coins) => {
       return res.json(coins);
     })
-    .catch(function (err){
+    .catch((err) => {
       console.log(err.message);
       return res.status(500).send("Server Error");
     });

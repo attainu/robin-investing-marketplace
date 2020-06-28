@@ -1,0 +1,84 @@
+CurrencyExRoutes----------------------------------------------------------------
+
+1) Getting data on all the available coins -
+    route - '/CurrencyExchange'
+    type - GET
+    body parameters - None
+    expected response - json array with coin objects.
+
+2) Getting data on a specific coin -
+    route - '/CurrencyExchange/:coinId'
+    type - GET
+    body parameters - None
+    expected response - json object with the details about coin with coin_id provided as params.
+
+3) Getting data for a transaction between a particular coin and the base currency used in the app(USD) -
+    route - '/CurrencyExchange/transaction/:coinId'
+    type - GET
+    body parameters - None
+    expected response - json array containing objects with the details about coin
+                        with coin_id provided as params and another object  containing
+                        details about base currency(USD).
+
+4) Performing a transaction between a particular coin and the base currency(USD) -
+    route - '/CurrencyExchange/transaction/:coinId'
+    type - POST
+    body parameters - {
+                        "BaseCurr": "<coinId of the base currency>",
+                        "ExCurr": "coinId of the currency you are trying to buy",
+                        "BaseAmt": amount of base currency you will be spending,
+                        "ExAmt": amount of new currency you will be getting,
+                        "Type": "type of transaction with respect to the base currency",
+                        "Category": "category of transaction"
+                        }
+    expected response - json object with updated wallet details.
+                        also adds a new transaction to record the exchange.
+
+    Note - BaseAmt and ExAmt are being calculated with the help of the coin details provided in the response of the GET route mentioned above.
+           All the above routes are protected routes. Session based authentication is being used to verify the user.
+
+
+HomeRoutes ---------------------------------------------------------------------
+
+1)  Getting data on all the available coins -
+    route - '/CurrencyExchange'
+    type - GET
+    body parameters - None
+    expected response - json array with coin objects.
+
+    Note - This is not a protected route. Anyone who visits the app can casually
+           check the currenct exchange prices using the provided data on coins.
+
+
+
+WalletRoutes--------------------------------------------------------------------
+
+1) Getting data on the wallet related to the logged in user - 
+    route - '/wallet'
+    type - GET
+    body parameters - None
+    expected response - json object showing the wallet object related to the logged in user
+
+2) Getting the details for adding funds to the wallet -
+    route - '/wallet/addFunds'
+    type - GET
+    body parameters - None
+    expected response - json object showing the object with coin details of base currency(USD).
+
+3) Adding funds to the wallet -
+    route - '/wallet/addFunds'
+    type - POST
+    body parameters - {
+                      "BaseCurr": "coinId of the base currency(USD)",
+                      "BaseAmt": amount to be added as funds to the wallet,
+                      "Type": "type of transation with respect to the base currency",
+                      "Category": "category of transaction"
+                      }
+    expected response - json object with updated wallet details.
+                        also adds a new transaction to record the exchange.
+
+4) Adding a new wallet for the user without an existing wallets -
+    route - '/wallet/addWallet'
+    type - POST
+    body parameters - None
+    expected response - json object showing the object with coin details of base currency(USD).
